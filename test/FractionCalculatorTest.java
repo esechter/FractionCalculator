@@ -39,9 +39,11 @@ class FractionCalculatorTest {
         String s1 = "1";
         String s2 = "-1";
         String s3 = "1/2";
+        String s4 = "111/561";
         assertEquals(true, FractionCalculator.isValidFraction(s1));
         assertEquals(true, FractionCalculator.isValidFraction(s2));
         assertEquals(true,FractionCalculator.isValidFraction(s3));
+        assertEquals(true, FractionCalculator.isValidFraction(s4));
     }
 
     @Test
