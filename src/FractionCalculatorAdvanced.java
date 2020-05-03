@@ -1,21 +1,22 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class FractionCalculator {
+public class FractionCalculatorAdvanced {
     public static void main(String[] args) {
         System.out.println("This program is a fraction calculator.\n" +
             "You can add, subtract, multiply and divide two fractions, or type 'Q' to quit.\n" +
             "This calculator only works with integer fractions, ex. 1/2 or -4/5. Whole numbers " +
             "are valid ex. -42 or -42/1");
         Scanner sc = new Scanner(System.in);
-        String operation;
+        String oneLiner;
         do {
             System.out.println("-----------------------");
-            operation = getOperation(sc);
-            if (!operation.equals("Q") && !operation.equals("q")) {
-                System.out.println("Provide two fractions.");
-                Fraction fraction1 = getFraction(sc);
-                Fraction fraction2 = getFraction(sc);
+            oneLiner = getOperation(sc);
+            if (!oneLiner.toLowerCase().equals("q")) {
+                String[] inputArray = oneLiner.split(" ");
+                Fraction fraction1 = getFraction(inputArray[0]);
+                Fraction fraction2 = getFraction(inputArray[2]);
+                String operation = inputArray[1].trim();
                 Fraction result = null;
                 switch (operation) {
                     case "+":
@@ -33,14 +34,14 @@ public class FractionCalculator {
                 }
                 System.out.println(fraction1.toString() + " " + operation + " " + fraction2.toString() + " = " + result.toString());
             }
-        } while (!operation.equals("Q") && !operation.equals("q"));
+        } while (!oneLiner.toLowerCase().equals("q"));
     }
 
     public static String getOperation(Scanner sc){
-        String prompt = "Please enter an operation (+, -, *, /, or Q to quit): ";
+        String prompt = "Please enter an operation or Q to quit): ";
         System.out.print(prompt);
         String input = sc.nextLine();
-        while (!isValidOperation(input)) {
+        while (!isValidOneLiner(input)) {
             System.out.print("Invalid input. " + prompt);
             input = sc.nextLine();
         }
@@ -56,14 +57,7 @@ public class FractionCalculator {
         return false;
     }
 
-    public static Fraction getFraction(Scanner sc) {
-        String prompt = "Please enter an integer fraction or integer, ex. 'a/b' or 'a': ";
-        System.out.print(prompt);
-        String input = sc.nextLine();
-        while (!isValidFraction(input)) {
-            System.out.print("Invalid fraction. " + prompt);
-            input = sc.nextLine();
-        }
+    public static Fraction getFraction(String input) {
         String[] inputArray = input.split("/");
         ArrayList<Integer> ints = new ArrayList<>();
         for (String s : inputArray) {
@@ -79,11 +73,10 @@ public class FractionCalculator {
         return null;
     }
 
-    public static Boolean isValidFraction(String input) {
-        if (input.matches("-?\\d+/?\\d*")) {
+    public static Boolean isValidOneLiner(String input) {
+        if (input.matches("-?\\d+/?\\d* [-+*/] -?\\d+/?\\d*")) {
             return true;
         }
-        return false;
+        return input.toLowerCase().equals("q");
     }
-
 }
